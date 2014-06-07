@@ -109,7 +109,7 @@ class NtlmMessage:
 
 class NtlmChallenge(NtlmMessage):
 
-	def __init__(self, target='', flags=0xa2898205, nonce=None, version=(6,1,7601), targetinfo=[]):
+	def __init__(self, target='', flags=0xe2898215, nonce=None, version=(6,1,7601), targetinfo=[]):
 
 		if nonce == None:
 			nonce = '1122334455667788'.decode('hex')

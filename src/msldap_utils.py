@@ -17,7 +17,7 @@ def ldap_search_result_entry(msgId):
 	msg = LDAPMessage() \
 		.setComponentByName('messageID', msgId) \
 		.setComponentByName('protocolOp', Choice() \
-			.setComponentByPosition(2, SearchResultEntry()
+			.setComponentByPosition(2, SearchResultEntry() \
 				.setComponentByName('objectName', '') \
 				.setComponentByName('attributes', PartialAttributeList() \
 					.setComponentByPosition(0, Sequence() \
@@ -37,7 +37,7 @@ def ldap_search_result_done(msgId, status):
 	msg = LDAPMessage() \
 		.setComponentByName('messageID', msgId) \
 		.setComponentByName('protocolOp', Choice() \
-			.setComponentByPosition(2, SearchResultDone()
+			.setComponentByPosition(2, SearchResultDone() \
 				.setComponentByName('resultCode', 'success') \
 				.setComponentByName('matchedDN', '') \
 				.setComponentByName('errorMessage', '')
@@ -65,11 +65,11 @@ def ldap_bind_response_type1(msgId, status):
 	msg = LDAPMessage() \
 		.setComponentByName('messageID', msgId) \
 		.setComponentByName('protocolOp', Choice() \
-			.setComponentByPosition(2, BindResponse()
+			.setComponentByPosition(2, BindResponse() \
 				.setComponentByName('resultCode', status) \
 				.setComponentByName('matchedDN', '') \
-				.setComponentByName('errorMessage', '')
-				.setComponentByName('serverSaslCreds', saslCreds)				
+				.setComponentByName('errorMessage', '') \
+				.setComponentByName('serverSaslCreds', saslCreds)
 			)
 		)
 
@@ -80,10 +80,11 @@ def ldap_bind_response_type3(msgId, status):
 	msg = LDAPMessage() \
 		.setComponentByName('messageID', msgId) \
 		.setComponentByName('protocolOp', Choice() \
-			.setComponentByPosition(2, BindResponse()
+			.setComponentByPosition(2, BindResponse() \
 				.setComponentByName('resultCode', status) \
 				.setComponentByName('matchedDN', '') \
-				.setComponentByName('errorMessage', '')
+				.setComponentByName('errorMessage', '') \
+				.setComponentByName('serverSaslCreds', '')
 			)
 		)
 

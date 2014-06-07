@@ -30,7 +30,7 @@ class CLDAPHandler(BaseRequestHandler):
 		
 		req = parse_cldap_req(data)
 
-		print "[*] cldap server: recieved request with (messageID=%s)" % (req['messageID'])
+		print "[*] cldap server: received request with (messageID=%s)" % (req['messageID'])
 
 		try:
 			dnsDomain = str(req['protocolOp'][0]['filter']['and'][0]['equalityMatch']['assertionValue'])

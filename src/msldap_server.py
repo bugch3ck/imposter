@@ -35,25 +35,31 @@ class LDAPHandler(StreamRequestHandler):
 			req = ldap_request_parse(data)
 			res = None
 
-			print "[*] ldap server: recieved request with (messageID=%s)" % (req['messageID'])
+			if req != 0:
+				print "[*] ldap server: received request with (messageID=%s)" % (req['messageID'])
 
-			if req['protocolOp']['bindRequest'] != None:
-				print "[*] ldap server: parsed bindRequest"
-				res = process_bind_request(req);
-			elif req['protocolOp']['searchRequest'] != None:
-				print "[*] ldap server: parsed searchRequest"
-				res = process_search_request(req);
-			elif req['protocolOp']['unbindRequest'] != None:
-				print "[*] ldap server: parsed unbindRequest"
+				if req['protocolOp']['bindRequest'] != None:
+					print "[*] ldap server: parsed bindRequest"
+					res = process_bind_request(req);
+				elif req['protocolOp']['searchRequest'] != None:
+					print "[*] ldap server: parsed searchRequest"
+					res = process_search_request(req);
+				elif req['protocolOp']['unbindRequest'] != None:
+					print "[*] ldap server: parsed unbindRequest"
+					socket.close()
+					break
+				else:
+					raise Exception('ldap server: request type not implemented')
+
+				if res != None:
+					data = ldap_response_encode(res)
+					socket.sendall(data)
+			else:
+				print "[-] ldap server: request not parsed (may be SASL buffer)"
+				# act like it is an unbindRequest
 				socket.close()
 				break
-			else:
-				raise Exception('ldap server: request type not implemented')
 
-			if res != None:
-				data = ldap_response_encode(res)
-
-				socket.sendall(data)
 
 def process_search_request(req):
 
@@ -68,7 +74,7 @@ def process_bind_request(req):
 
 	sasl_mech = req['protocolOp']['bindRequest']['authentication']['sasl']['mechanism']
 
-	print "[*] ldap server: recieved bindRequest with sasl method %s" % (sasl_mech)
+	print "[*] ldap server: received bindRequest with sasl method %s" % (sasl_mech)
 
 	if sasl_mech == 'NTLM':
 
